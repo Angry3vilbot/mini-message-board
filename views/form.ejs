@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo.svg" type="image/svg">
+    <link rel='stylesheet' href='/output.css'/>
+    <title>TS - New Message</title>
+</head>
+<body class="bg-white dark:bg-[#0E1621] dark:text-white flex flex-col">
+    <nav class=" dark:bg-[#17212b] mb-5">
+        <h1 class="text-3xl"><span class="bg-[url('/images/logo.svg')] inline-block align-middle bg-contain bg-no-repeat bg-center w-8 h-8"></span> New Message</h1>
+    </nav>
+    <form class="flex flex-col gap-5 ml-5 items-center" id="text-form" method="POST" action="/new">
+        <input class="dark:bg-[#182533] pl-1 rounded-sm" type="text" name="username" id="nickname" placeholder="Nickname (5-25 symbols)" pattern="([A-Za-z0-9])+" minlength="5" maxlength="25" required>
+        <textarea class="dark:bg-[#182533] pl-1 resize-none w-96 rounded-xl" name="message" id="message" cols="30" rows="10" placeholder="Your Message" maxlength="250" required></textarea>
+        <button type="submit" class="bg-[#2f6ea5] w-48 mr-5 rounded-2xl hover:bg-[#1f86e0]">Send</button>
+    </form>
+    <form class="hidden flex-col gap-5 ml-5 items-center" id="image-form" class="hidden" action="/newimg" enctype="multipart/form-data" method="POST">
+        <input class="dark:bg-[#182533] pl-1 rounded-sm" type="text" name="username" id="nickname" placeholder="Nickname (5-25 symbols)" pattern="([A-Za-z0-9])+" minlength="5" maxlength="25" required>
+        <input type="file" id="image" accept="image/*" name="image" value="" required>
+        <button type="submit" class="bg-[#2f6ea5] w-48 mt-5 mr-5 rounded-2xl hover:bg-[#1f86e0]">Send</button>
+    </form>
+    <button id="change-form-btn" class="bg-[#2f6ea5] self-center w-48 mt-5 rounded-2xl hover:bg-[#1f86e0]" onclick="changeForm()">Send an image instead</button>
+    <form action="/" method="get" class="absolute bottom-2 left-2">
+        <button onclick="loadingAnimation()" id="home-btn" type="submit" class="bg-[#2f6ea5] self-center w-48 mt-5 rounded-2xl hover:bg-[#1f86e0]">Back to the Home Page</button>
+    </form> 
+</body>
+<script>
+    function changeForm() {
+        if(document.querySelector('.hidden').id === 'image-form') {
+            document.querySelector('#change-form-btn').innerHTML = 'Send a message instead'
+        }
+        else {
+            document.querySelector('#change-form-btn').innerHTML = 'Send an image instead'
+        }
+        document.querySelectorAll('form').forEach((form) => {
+            form.classList.toggle('hidden')
+            form.classList.toggle('flex')
+        })
+    }
+    function loadingAnimation() {
+        document.querySelector('#home-btn').innerHTML = 'Loading...'
+        document.querySelector('#home-btn').classList.add('loading')
+    }
+    document.querySelectorAll('form').forEach(form => {
+	    form.addEventListener('submit', (e) => {
+		    if (form.classList.contains('is-submitting')) {
+		    	e.preventDefault();
+		    }
+
+		    form.classList.add('is-submitting');
+	    });
+    });
+</script>
+</html>

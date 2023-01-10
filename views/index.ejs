@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A message board for images and text">
+    <meta name="keywords" content="Message, Image, Messenger, Telegram, Angry3vilbot">
+    <title>TalkSpace</title>
+    <link rel="icon" href="/images/logo.svg" type="image/svg">
+    <link rel='stylesheet' href='/output.css'/>
+  </head>
+  <body class="bg-white dark:bg-[#0E1621] dark:text-white">
+    <nav class="dark:bg-[#17212b]">
+      <h1 class="text-3xl"><span class="bg-[url('/images/logo.svg')] inline-block align-middle bg-contain bg-no-repeat bg-center w-8 h-8"></span> TalkSpace - A Mini Message Board</h1>
+      <p><%= `${messages.length} Messages Total` %></p>
+    </nav>
+    <section class="main">
+      <form class="mt-5 mb-5 flex flex-col items-center" action="/new" method="get">
+        <button class="bg-[#2f6ea5] w-32 rounded-2xl hover:bg-[#1f86e0]" type="submit">New Message</button>
+      </form>
+      <div class="messages-container flex flex-col gap-8 items-center">
+        <% if (messages.length > 0) { %>
+         <%_ for (let i = 0; i < messages.length; i++) { _%>
+          <% if (messages[i].message) { %>
+           <div class="message dark:bg-[#182533] w-1/3 rounded-2xl">
+            <h2 class="text-[#70baf5] pl-2 pt-1"><%= messages[i].nickname %></h2>
+            <p class="pl-2"><%= messages[i].message %></p>
+            <h5 class="text-[#6d7f8f] text-right pr-2"><%= `${messages[i].date.getDate()}.
+            ${(() => {if(messages[i].date.getMonth()+1 < 10){return `0${messages[i].date.getMonth()+1}`} else{return `${messages[i].date.getMonth()+1}`}})()}
+            .${messages[i].date.getFullYear()}`.replace(/\s/g,'') + ` ${messages[i].date.toLocaleTimeString('it-IT').slice(0, -3)}`%></h5>
+          </div>
+          <% } else { %>
+            <div class="message dark:bg-[#182533] w-1/3 rounded-2xl">
+              <h2 class="text-[#70baf5] pl-2 pt-1"><%= messages[i].nickname %></h2>
+              <img class="pl-2" src="data:image/<%=messages[i].image.contentType%>;base64,
+              <%=messages[i].image.data.toString('base64')%>" alt="Image">
+              <h5 class="text-[#6d7f8f] text-right pr-2"><%= `${messages[i].date.getDate()}.
+              ${(() => {if(messages[i].date.getMonth()+1 < 10){return `0${messages[i].date.getMonth()+1}`} else{return `${messages[i].date.getMonth()+1}`}})()}
+              .${messages[i].date.getFullYear()}`.replace(/\s/g,'') + ` ${messages[i].date.toLocaleTimeString('it-IT').slice(0, -3)}`%></h5>
+            </div>
+         <%_ }  _%>
+         <%_ }  _%>
+        <% } else { %>
+          <div class="no-messages-display">
+            <h1>No Messages Here</h1>
+            <p>Either there was an error, or there are just no messages, in which case you should add one!</p>
+          </div>
+        <% } %>
+      </section>
+      <footer class="text-center text-xl">The end!</footer>
+    </div>
+  </body>
+</html>
